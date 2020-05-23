@@ -1,0 +1,34 @@
+{
+  "name": "Enc Wallet",
+  "version": "1.0.0",
+  "description": "eRush's encrypted message wallet.",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EthereumPay/PayWallet.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EthereumPay/PayWallet/issues"
+  },
+  "homepage": "https://github.com/EthereumPay/PayWallet#readme",
+  "devDependencies": {
+    "electron": "^7.1.2"
+  },
+  "dependencies": {
+    "bitcore-ecies": "^1.0.3",
+    "electron": "^7.1.2",
+    "electron-packager": "^14.2.1",
+    "eth-crypto": "^1.5.2",
+    "ethereum-hdwallet": "0.0.26",
+    "ethereumjs-tx": "^2.1.2",
+    "ethereumjs-wallet": "^0.6.3",
+    "jquery": "^3.5.0",
+    "secp256k1": "^4.0.0",
+    "web3": "^1.2.6"
+  }
+}
