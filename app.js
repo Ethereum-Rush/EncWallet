@@ -191,50 +191,24 @@ ipcMain.on('receivekey', (event, privateKey) => {
    console.log("end");
    getbalance();
  } else {
-   var privateKey = Buffer.from(privateKey, 'hex' );
-   try {
-     myetheraddress = ethUtils.privateToAddress(privateKey).toString('hex');
 
-     const privateKeyBuffer = ethUtils.toBuffer(privateKey);
-     const wallet = Wallet.fromPrivateKey(privateKeyBuffer);
-     publickey = wallet.getPublicKey().toString('hex');
-    console.log("publickey", publickey);
 
-     console.log(privateKey);
-     console.log(myetheraddress);
-     pkkey = privateKey;
-     console.log("endd");
+   mainWindow.send("enableagain", "true");
+   const options = {
+   type: 'question',
+   buttons: ['好'],
+   defaultId: 3,
+   title: 'Warning',
+   message: 'Wallet type problem',
+   detail: 'Hola, you need 12 words mnemonic wallet! you can use trustwallet for that!',
+ };
 
-     getbalance();
-} catch (e) {
+ dialog.showMessageBox(null, options, (response, checkboxChecked) => {
+   console.log(response);
+   console.log(checkboxChecked);
+ });
 
-  if (e instanceof TypeError) {
-    // ignore TypeError
-  }
-  else if(e instanceof RangeError) {
-    // handle RangeError
-    console.log("I need a valid eth private key.")
-    mainWindow.send("enableagain", "true");
-    const options = {
-    type: 'question',
-    buttons: ['Okey.'],
-    defaultId: 2,
-    title: 'Warning',
-    message: 'Ethereum private key problem',
-    detail: 'I need a valid eth private key.',
-  };
 
-  dialog.showMessageBox(null, options, (response, checkboxChecked) => {
-
-    console.log(enableagain);
-    console.log(response);
-    console.log(checkboxChecked);
-  });
-
-  } else {
-    console.log(e);
-  }
-}
  }
 });
 
@@ -323,26 +297,13 @@ function getbalance() {
 
 
 async function decryptplease(encmessage) {
-
-  console.log("11111");
-  console.log("enn1",encmessage );
-
-  if(encmessage["0"] == 1587330167) {
-    console.log("2222");
-    console.log("KQ", encmessage["2"]);
-
-    //const encmsgggg = await EthCrypto.decryptWithPrivateKey(pkkey.toString('hex'), encmessage["2"]);
-    //const encmsggggq = await EthCrypto.decryptWithPrivateKey(pkkey.toString('hex'), JSON.parse(encmessage["2"]));
-
-    //console.log("encmsgggg",encmsgggg);
-    //console.log("encmsggggq",encmsggggq);
-
-
-  } else {
+  try {
+    console.log("11111");
+    console.log("enn1",encmessage );
     console.log("33333");
     console.log(encmessage["2"]);
     var encmsh = EthCrypto.cipher.parse(encmessage["2"]);
-    console.log(encmsh);
+    console.log("encmsh", encmsh);
     datazzz  = [];
     const encmsgggg = await EthCrypto.decryptWithPrivateKey(pkkey.toString('hex'), encmsh);
     console.log("encmsgggg",encmsgggg);
@@ -352,9 +313,14 @@ async function decryptplease(encmessage) {
     datazzz.push(encmessage["1"]);
     datazzz.push(encmsgggg);
     datazzz.push(encmessage["3"]);
-
     mainWindow.send("appendnewmemo", datazzz);
+  } catch(err) {
+    console.log(pkkey);
+    console.log(pkkey.toString('hex'));
+    console.log(err); // TypeError: failed to fetch
   }
+
+
 
 
 }
